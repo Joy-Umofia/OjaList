@@ -1,0 +1,117 @@
+body {
+  height: auto;
+ font-family: "Nunito", sans-serif;
+ background-color: #FFF6E7;
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-start;
+ align-items: center;
+  
+}
+
+h1{
+  color:#7B923A;
+   font-family:'Courier New', Courier, monospace;
+   text-align: center;
+   font-size: 40px;
+}
+
+.budget-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  padding-left: 4px;
+  margin-bottom: 3rem;
+}
+.in-cont{
+  width: 60%;
+  border-bottom:1px solid #DEC7A7;
+  border-top:1px solid #DEC7A7;
+  border-left:1px solid #DEC7A7;
+  border-bottom-left-radius: 8px;
+  border-top-left-radius:8px;
+  padding: 6px;
+}
+.budget-container input{
+   border: none;
+   outline: none;
+   background-color: #FFF6E7;
+}
+.budget-container button{
+  padding: 12px;
+   border: none;
+   background-color: #7B923A;
+   color: white;
+   border-radius: 6px;
+}
+.item-section{
+  padding: 16px 8px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  background-color: #fff2e3 ;
+  border: 1px solid  #ecdac4;
+  border-radius: 8px;
+}
+.items-form{
+  width: 100%;
+  text-align: center;
+
+    
+}
+ .items-input{
+  margin-top: 10px;
+} 
+.items-form label{
+  font-size: 1.5rem;
+}
+.items-input input {
+   border: none;
+   outline: none;
+  border-bottom:1px solid #DEC7A7;
+  border-top:1px solid #DEC7A7;
+  border-left:1px solid #DEC7A7;
+  padding: 10px;
+  background-color: #FFEBD2;
+}
+.items-input input:first-child{
+   border-top-left-radius:8px ;
+   border-bottom-left-radius: 8px;
+}
+.items-input input:last-child{
+   border-top-left-radius:0px ;
+    border-bottom-left-radius: 0px;
+}
+.items-input button{
+  padding: 12px;
+   border: none;
+   background-color: #DB8329;
+   color: white;
+   border-radius: 6px;
+}
+.items-card{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border:1px solid #DEC7A7;
+  border-radius: 8px;
+  
+ }
+ .items-card div{
+    display: flex;
+ }
+ .items-card div:first-child{
+  display: flex;
+  align-items: center;
+  text-transform: capitalize;
+ }
+ .items-card div:last-child{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+ }
