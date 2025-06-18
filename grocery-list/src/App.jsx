@@ -4,19 +4,20 @@ import { useState } from 'react'
 import './App.css'
 
 
-const allList=[
-  {id:1,description:"carrots",budget:300,price:400,packed:false},
-  {id:2,description:"bread",budget:300,price:400,packed:false},
-  {id:3,description:"beans",budget:300,price:400,packed:true},
-  {id:4,description:"rice",budget:300,price:400,packed:false}
-]
+// const allList=[
+//   {id:1,description:"carrots",budget:300,price:400,packed:false},
+//   {id:2,description:"bread",budget:300,price:400,packed:false},
+//   {id:3,description:"beans",budget:300,price:400,packed:true},
+//   {id:4,description:"rice",budget:300,price:400,packed:false}
+// ]
 
 function App() {
+  const[items,setItems]=useState([])
   return(
     <div>
       <Logo />
       <Budget />
-      <Item />
+      <Item addItems={items} upDateItems={setItems}/>
       
     </div>
   )
@@ -44,33 +45,46 @@ function Budget(){
   )
 }
 
-function Item(){
-  const[description,setDescription]=useState("value")
-
-  function handleSubmit(e){
+function Item({addItems,upDateItems}){
+  const[description,setDescription]=useState("")
+  const[price,setPrice]=useState("")
+  
+  
+  
+ function handleSubmit(e){
      e.preventDefault()
-     if(!description)alert("hello")
+     if(!description)alert("Please input an item")
+    const newItem={
+    id:Date.now(),
+    description:description,
+    price:Number(price),
+    packed:false,
+  }
+   upDateItems([...addItems,newItem])
+
+      setDescription("")
+      setPrice("")
   }
   return(
     <div className='item-section'>
       <form className='items-form' onSubmit={handleSubmit}>
         <label htmlFor="">Add item</label>
         <div className="items-input">
-          <input type="text" placeholder='item description' value={description}/>
-          <input type="number" placeholder='₦:price'/>
+          <input type="text" placeholder='item description' value={description}onChange={(e)=>setDescription(e.target.value)}/>
+          <input type="number" placeholder='price' value={price} onChange={(e)=>setPrice(e.target.value)}/>
           <button> + Add Item</button>
         </div>
       </form>
-      <CardSection />
+      <CardSection addItems={addItems} upDateItems={upDateItems}/>
       <Statistics />
     </div>
   )
 }
 
-function CardSection(){
+function CardSection({addItems}){
   return(
     <div className='items'>
-      {allList.map((item)=><Cards item={item} />)}
+      {addItems.map((item)=><Cards item={item} key={item.id} />)}
     </div>
   )
 }

@@ -92,6 +92,16 @@ h1{
    background-color: #DB8329;
    color: white;
    border-radius: 6px;
+   cursor: pointer;
+   transition: all 3s ease;
+}
+.items-input button:hover{
+  background-color: #a6682a;
+}
+.items{
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
 }
 .items-card{
   width: 100%;
