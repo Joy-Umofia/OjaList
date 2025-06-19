@@ -28,16 +28,19 @@ function App() {
   if (itemToEdit) {
     setDescription(itemToEdit.description);
     setPrice(itemToEdit.price.toString());
-    setEditId(id) 
+    setEditId(id)
   }
-}
+ }
+  function toggle(id){
+     setItems(items.map(item=>item.id===id?{...items,packed:item.packed}:item))
+  }
   return(
     <div>
       <Logo />
       <Budget />
       <Item addItems={items} upDateItems={setItems}
       deleteItems={handleDeleteItems} description={description} setDescription={setDescription} price={price} setPrice={setPrice} editItems={editItems} editId={editId}
-      setEditId={setEditId}/>
+      setEditId={setEditId} toggle={toggle}/>
       
     </div>
   )
@@ -65,7 +68,7 @@ function Budget(){
   )
 }
 
-function Item({addItems,upDateItems,deleteItems,description,setDescription,price,setPrice,editItems,editId,setEditId}){
+function Item({addItems,upDateItems,deleteItems,description,setDescription,price,setPrice,editItems,editId,setEditId,toggle}){
   // const[description,setDescription]=useState("")
   // const[price,setPrice]=useState("")
   
@@ -81,7 +84,16 @@ function Item({addItems,upDateItems,deleteItems,description,setDescription,price
       alert("Input your price so you dont't over spend")
       return
     }
+     if (editId !== null) {
     
+    const updatedItems = addItems.map(item =>
+      item.id === editId
+        ? { ...item, description, price: Number(price) }
+        : item
+    );
+    upDateItems(updatedItems);
+    setEditId(null); 
+  } else {
     
     const newItem = {
       id: Date.now(),
@@ -113,13 +125,13 @@ function Item({addItems,upDateItems,deleteItems,description,setDescription,price
           <button>{editId !== null ? " Update" : "+ Add Item"}</button>
         </div>
       </form>
-      <CardSection addItems={addItems} upDateItems={upDateItems} deleteItems={deleteItems} editItems={editItems} editId={editId}/>
+      <CardSection addItems={addItems} upDateItems={upDateItems} deleteItems={deleteItems} editItems={editItems} editId={editId} toggle={toggle}/>
       <Statistics />
     </div>
   )
 }
 
-function CardSection({addItems,deleteItems,editItems}){
+function CardSection({addItems,deleteItems,editItems,toggle}){
   return(
     <div className='items'>
       {addItems.map((item)=><Cards item={item} key={item.id} deleteItems={deleteItems} editItems={editItems}/>)}
@@ -131,7 +143,7 @@ function Cards({item,deleteItems,editItems}){
    return(
     <div className='items-card'>
         <div>
-          <input type="checkbox" name="" id="" />
+          <input type="checkbox" value={toggle.packed} onChange={()=>toggle(item.packed)} id="" />
           <p style={item.packed?{textDecoration:"line-through"}:{}}>{item.description}</p>
         </div>
         <div>
