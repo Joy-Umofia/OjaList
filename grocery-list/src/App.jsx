@@ -36,7 +36,11 @@ function App() {
   function toggle(id){
      setItems(items.map(item=>item.id===id?{...item,packed:!item.packed}:item))
   }
-  // budget form
+  function clearList(){
+      const confirmed=window.confirm("Are you sure you want to delete the items")
+      if(confirmed)setItems([])
+        setBugSub("")
+  }
 
   return(
     <div>
@@ -44,7 +48,7 @@ function App() {
       <Budget bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub} setBugSub={setBugSub}/>
       <Item addItems={items} upDateItems={setItems}
       deleteItems={handleDeleteItems} description={description} setDescription={setDescription} price={price} setPrice={setPrice} editItems={editItems} editId={editId}
-      setEditId={setEditId} toggle={toggle} bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub} setBugSub={setBugSub}/>
+      setEditId={setEditId} toggle={toggle} bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub} setBugSub={setBugSub} clearList={clearList}/>
       
     </div>
   )
@@ -79,7 +83,7 @@ function Budget({bugPrice,setBugPrice,setBugSub}){
   )
 }
 
-function Item({addItems,upDateItems,deleteItems,description,setDescription,price,setPrice,editItems,editId,setEditId,toggle,bugPrice,setBugPrice,bugsub}){
+function Item({addItems,upDateItems,deleteItems,description,setDescription,price,setPrice,editItems,editId,setEditId,toggle,bugPrice,setBugPrice,bugsub,clearList}){
   // const[description,setDescription]=useState("")
   // const[price,setPrice]=useState("")
   
@@ -139,7 +143,7 @@ function Item({addItems,upDateItems,deleteItems,description,setDescription,price
         </div>
       </form>
       <CardSection addItems={addItems} upDateItems={upDateItems} deleteItems={deleteItems} editItems={editItems} editId={editId} toggle={toggle}/>
-      <Statistics addItems={addItems} bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub}/>
+      <Statistics addItems={addItems} bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub} clearList={clearList}/>
     </div>
   )
 }
@@ -169,7 +173,7 @@ function Cards({item,deleteItems,editItems,toggle}){
 }
 
 
-function Statistics({addItems,bugsub}){
+function Statistics({addItems,bugsub,clearList}){
     const addPrice=addItems.reduce((sum,item)=>(sum+item.price),0)
     console.log(addPrice)
     const calc=bugsub-addPrice
@@ -178,21 +182,17 @@ function Statistics({addItems,bugsub}){
       <div>
         <p className='green'>Spent: ₦{addPrice}</p>
         
-        {calc<0&&<p>Remaining:<span className='red'> You've gone beyond your budget so you owe ₦{Math.abs(calc)}</span> </p>}
+        {bugsub&&calc<0&&<p>Remaining:<span className='red'> You've gone beyond your budget so you owe ₦{Math.abs(calc)}</span> </p>}
 
-        {calc>0 &&<p>Remaining:<span className='green'>Your budget is ₦{bugsub}, and you have ₦{calc} remaining</span> </p>}
+        {bugsub&&calc>=0 &&<p>Remaining:<span className='green'>Your budget is ₦{bugsub}, and you have ₦{calc} remaining</span> </p>}
 
-        {!bugsub&&<p>Remaining: <span>No budget yet</span> </p>}
+        {!bugsub&&<p></p>}
         
 
         
       </div>
-      <button>Clear All</button>
-      <select name="" id="">
-        <option value="">Name (a-z)</option>
-        <option value="">Price(low-High)</option>
-        <option value="">Bought</option>
-      </select>
+      <button style={{backgroundColor:"#fee2e2",border:"none",borderRadius:"8px",padding:"10px",color:"#DC2626",cursor:"pointer"}} onClick={clearList}>Clear All</button>
+      
     </div>
   )
 }
