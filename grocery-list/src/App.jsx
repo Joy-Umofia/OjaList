@@ -16,6 +16,8 @@ function App() {
    const[description,setDescription]=useState("")
   const[price,setPrice]=useState("")
   const[editId,setEditId]=useState(null)
+  const [bugPrice,setBugPrice]=useState("")
+  const [bugsub,setBugSub]=useState("")
 
   // deleting items
   function handleDeleteItems(id){
@@ -32,15 +34,17 @@ function App() {
   }
  }
   function toggle(id){
-     setItems(items.map(item=>item.id===id?{...items,packed:item.packed}:item))
+     setItems(items.map(item=>item.id===id?{...item,packed:!item.packed}:item))
   }
+  // budget form
+
   return(
     <div>
       <Logo />
-      <Budget />
+      <Budget bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub} setBugSub={setBugSub}/>
       <Item addItems={items} upDateItems={setItems}
       deleteItems={handleDeleteItems} description={description} setDescription={setDescription} price={price} setPrice={setPrice} editItems={editItems} editId={editId}
-      setEditId={setEditId} toggle={toggle}/>
+      setEditId={setEditId} toggle={toggle} bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub} setBugSub={setBugSub}/>
       
     </div>
   )
@@ -55,12 +59,19 @@ function Logo(){
     </div>
   )
 }
-function Budget(){
+function Budget({bugPrice,setBugPrice,setBugSub}){
+  
+  function budgetSubmit(e){
+    e.preventDefault()
+    
+     setBugSub(bugPrice)
+     setBugPrice("")
+  }
   return(
-    <form className='budget-container'>
+    <form className='budget-container' onSubmit={budgetSubmit}>
       <div className='in-cont'>
           <span style={{color:"green",fontSize:"1.2rem"}}>₦:</span>
-          <input type="number"  placeholder='000' required/>
+          <input type="number"  placeholder='000' required value={bugPrice} onChange={(e)=>setBugPrice(e.target.value)}/>
       </div>
       <button>Add budget</button>
     </form>
@@ -68,7 +79,7 @@ function Budget(){
   )
 }
 
-function Item({addItems,upDateItems,deleteItems,description,setDescription,price,setPrice,editItems,editId,setEditId,toggle}){
+function Item({addItems,upDateItems,deleteItems,description,setDescription,price,setPrice,editItems,editId,setEditId,toggle,bugPrice,setBugPrice,bugsub}){
   // const[description,setDescription]=useState("")
   // const[price,setPrice]=useState("")
   
@@ -121,12 +132,14 @@ function Item({addItems,upDateItems,deleteItems,description,setDescription,price
         <label htmlFor="">Add item</label>
         <div className="items-input">
           <input type="text" placeholder='item description' value={description}onChange={(e)=>setDescription(e.target.value)}/>
+
           <input type="number" placeholder='price' value={price} onChange={(e)=>setPrice(e.target.value)}/>
+
           <button>{editId !== null ? " Update" : "+ Add Item"}</button>
         </div>
       </form>
       <CardSection addItems={addItems} upDateItems={upDateItems} deleteItems={deleteItems} editItems={editItems} editId={editId} toggle={toggle}/>
-      <Statistics />
+      <Statistics addItems={addItems} bugPrice={bugPrice} setBugPrice={setBugPrice} bugsub={bugsub}/>
     </div>
   )
 }
@@ -134,16 +147,16 @@ function Item({addItems,upDateItems,deleteItems,description,setDescription,price
 function CardSection({addItems,deleteItems,editItems,toggle}){
   return(
     <div className='items'>
-      {addItems.map((item)=><Cards item={item} key={item.id} deleteItems={deleteItems} editItems={editItems}/>)}
+      {addItems.map((item)=><Cards item={item} key={item.id} deleteItems={deleteItems} editItems={editItems} toggle={toggle}/>)}
     </div>
   )
 }
 
-function Cards({item,deleteItems,editItems}){
+function Cards({item,deleteItems,editItems,toggle}){
    return(
     <div className='items-card'>
         <div>
-          <input type="checkbox" value={toggle.packed} onChange={()=>toggle(item.packed)} id="" />
+          <input type="checkbox" value={item.packed} onChange={()=>toggle(item.id)} id="" />
           <p style={item.packed?{textDecoration:"line-through"}:{}}>{item.description}</p>
         </div>
         <div>
@@ -156,11 +169,12 @@ function Cards({item,deleteItems,editItems}){
 }
 
 
-function Statistics(){
+function Statistics({addItems,bugsub}){
+  
   return(
     <div>
       <div>
-        <p>Spent:</p>
+        <p>Spent:{bugsub}/</p>
         <p>Remaining:</p>
       </div>
       <button>Clear All</button>
