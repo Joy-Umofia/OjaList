@@ -13,7 +13,7 @@ import './App.css'
 
 function App() {
   const[items,setItems]=useState([])
-   const[description,setDescription]=useState("")
+  const[description,setDescription]=useState("")
   const[price,setPrice]=useState("")
   const[editId,setEditId]=useState(null)
   const [bugPrice,setBugPrice]=useState("")
@@ -170,12 +170,22 @@ function Cards({item,deleteItems,editItems,toggle}){
 
 
 function Statistics({addItems,bugsub}){
-  
-  return(
+    const addPrice=addItems.reduce((sum,item)=>(sum+item.price),0)
+    console.log(addPrice)
+    const calc=bugsub-addPrice
+   return(
     <div>
       <div>
-        <p>Spent:{bugsub}/</p>
-        <p>Remaining:</p>
+        <p className='green'>Spent: ₦{addPrice}</p>
+        
+        {calc<0&&<p>Remaining:<span className='red'> You've gone beyond your budget so you owe ₦{Math.abs(calc)}</span> </p>}
+
+        {calc>0 &&<p>Remaining:<span className='green'>Your budget is ₦{bugsub}, and you have ₦{calc} remaining</span> </p>}
+
+        {!bugsub&&<p>Remaining: <span>No budget yet</span> </p>}
+        
+
+        
       </div>
       <button>Clear All</button>
       <select name="" id="">

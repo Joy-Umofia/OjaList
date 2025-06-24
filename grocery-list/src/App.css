@@ -125,3 +125,9 @@ h1{
   align-items: center;
   gap: 2px;
  }
+ .red{
+  color: red;
+ }
+ .green{
+  color: green;
+ }
